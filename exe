@@ -1,0 +1,529 @@
+1
+import java.util.ArrayList;
+import java.util.List;
+
+class Produto {
+    String nome;
+    double preco;
+    int quantidade;
+
+    public Produto(String nome, double preco, int quantidade) {
+        this.nome = nome;
+        this.preco = preco;
+        this.quantidade = quantidade;
+    }
+}
+
+class Fornecedor {
+    String nome;
+
+    public Fornecedor(String nome) {
+        this.nome = nome;
+    }
+}
+
+class Pedido {
+    Produto produto;
+    Fornecedor fornecedor;
+    int quantidade;
+
+    public Pedido(Produto produto, Fornecedor fornecedor, int quantidade) {
+        this.produto = produto;
+        this.fornecedor = fornecedor;
+        this.quantidade = quantidade;
+    }
+}
+
+class Estoque {
+    List<Produto> produtos = new ArrayList<>();
+
+    public void adicionarProduto(Produto produto) {
+        produtos.add(produto);
+    }
+
+    public List<Produto> listarProdutosBaixoEstoque(int limite) {
+        List<Produto> baixoEstoque = new ArrayList<>();
+        for (Produto produto : produtos) {
+            if (produto.quantidade < limite) {
+                baixoEstoque.add(produto);
+            }
+        }
+        return baixoEstoque;
+    }
+
+    public Pedido fazerPedido(Produto produto, Fornecedor fornecedor, int quantidade) {
+        return new Pedido(produto, fornecedor, quantidade);
+    }
+}
+2
+import java.util.ArrayList;
+import java.util.List;
+
+class Funcionario {
+    String nome;
+    double salario;
+    List<Projeto> projetos = new ArrayList<>();
+
+    public Funcionario(String nome, double salario) {
+        this.nome = nome;
+        this.salario = salario;
+    }
+
+    public void adicionarProjeto(Projeto projeto) {
+        projetos.add(projeto);
+    }
+
+    public List<Projeto> listarProjetos() {
+        return projetos;
+    }
+}
+
+class Departamento {
+    String nome;
+    List<Funcionario> funcionarios = new ArrayList<>();
+
+    public Departamento(String nome) {
+        this.nome = nome;
+    }
+
+    public void adicionarFuncionario(Funcionario funcionario) {
+        funcionarios.add(funcionario);
+    }
+
+    public double calcularMediaSalarial() {
+        double total = 0;
+        for (Funcionario funcionario : funcionarios) {
+            total += funcionario.salario;
+        }
+        return total / funcionarios.size();
+    }
+}
+
+class Projeto {
+    String nome;
+
+    public Projeto(String nome) {
+        this.nome = nome;
+    }
+}
+3
+import java.util.ArrayList;
+import java.util.List;
+
+class Usuario {
+    String nome;
+    List<Publicacao> publicacoes = new ArrayList<>();
+
+    public Usuario(String nome) {
+        this.nome = nome;
+    }
+
+    public void criarPublicacao(String conteudo) {
+        publicacoes.add(new Publicacao(this, conteudo));
+    }
+
+    public List<Publicacao> listarPublicacoes() {
+        return publicacoes;
+    }
+}
+
+class Publicacao {
+    Usuario usuario;
+    String conteudo;
+    List<Comentario> comentarios = new ArrayList<>();
+
+    public Publicacao(Usuario usuario, String conteudo) {
+        this.usuario = usuario;
+        this.conteudo = conteudo;
+    }
+
+    public void adicionarComentario(Usuario usuario, String texto) {
+        comentarios.add(new Comentario(usuario, texto));
+    }
+
+    public List<Comentario> listarComentarios() {
+        return comentarios;
+    }
+}
+
+class Comentario {
+    Usuario usuario;
+    String texto;
+
+    public Comentario(Usuario usuario, String texto) {
+        this.usuario = usuario;
+        this.texto = texto;
+    }
+}
+4
+import java.util.ArrayList;
+import java.util.List;
+
+class Passageiro {
+    String nome;
+    List<Reserva> reservas = new ArrayList<>();
+
+    public Passageiro(String nome) {
+        this.nome = nome;
+    }
+
+    public void reservarVoo(Voo voo) {
+        reservas.add(new Reserva(this, voo));
+    }
+
+    public List<Reserva> listarReservas() {
+        return reservas;
+    }
+}
+
+class Voo {
+    String codigo;
+    int capacidade;
+    List<Reserva> reservas = new ArrayList<>();
+
+    public Voo(String codigo, int capacidade) {
+        this.codigo = codigo;
+        this.capacidade = capacidade;
+    }
+
+    public boolean verificarDisponibilidade() {
+        return reservas.size() < capacidade;
+    }
+
+    public void adicionarReserva(Reserva reserva) {
+        reservas.add(reserva);
+    }
+}
+
+class Reserva {
+    Passageiro passageiro;
+    Voo voo;
+
+    public Reserva(Passageiro passageiro, Voo voo) {
+        this.passageiro = passageiro;
+        this.voo = voo;
+        voo.adicionarReserva(this);
+    }
+}
+5
+import java.util.ArrayList;
+import java.util.List;
+
+class Medico {
+    String nome;
+    List<Paciente> pacientes = new ArrayList<>();
+    List<Consulta> consultas = new ArrayList<>();
+
+    public Medico(String nome) {
+        this.nome = nome;
+    }
+
+    public void adicionarPaciente(Paciente paciente) {
+        pacientes.add(paciente);
+    }
+
+    public void agendarConsulta(Paciente paciente, String data) {
+        consultas.add(new Consulta(this, paciente, data));
+    }
+
+    public List<Paciente> listarPacientes() {
+        return pacientes;
+    }
+
+    public List<Consulta> listarConsultas() {
+        return consultas;
+    }
+}
+
+class Paciente {
+    String nome;
+
+    public Paciente(String nome) {
+        this.nome = nome;
+    }
+}
+
+class Consulta {
+    Medico medico;
+    Paciente paciente;
+    String data;
+
+    public Consulta(Medico medico, Paciente paciente, String data) {
+        this.medico = medico;
+        this.paciente = paciente;
+        this.data = data;
+    }
+}
+6
+import java.util.ArrayList;
+import java.util.List;
+
+class Carro {
+    String modelo;
+    Marca marca;
+    double preco;
+
+    public Carro(String modelo, Marca marca, double preco) {
+        this.modelo = modelo;
+        this.marca = marca;
+        this.preco = preco;
+    }
+}
+
+class Marca {
+    String nome;
+    List<Carro> carros = new ArrayList<>();
+
+    public Marca(String nome) {
+        this.nome = nome;
+    }
+
+    public void adicionarCarro(Carro carro) {
+        carros.add(carro);
+    }
+
+    public double calcularMediaPreco() {
+        double total = 0;
+        for (Carro carro : carros) {
+            total += carro.preco;
+        }
+        return total / carros.size();
+    }
+}
+
+class Vendedor {
+    String nome;
+    List<Carro> carrosVendidos = new ArrayList<>();
+
+    public Vendedor(String nome) {
+        this.nome = nome;
+    }
+
+    public void venderCarro(Carro carro) {
+        carrosVendidos.add(carro);
+    }
+
+    public List<Carro> listarCarrosVendidos() {
+        return carrosVendidos;
+    }
+}
+7
+import java.util.ArrayList;
+import java.util.List;
+
+class Livro {
+    String titulo;
+    Autor autor;
+    int copiasDisponiveis;
+    int vezesEmprestado = 0;
+
+    public Livro(String titulo, Autor autor, int copiasDisponiveis) {
+        this.titulo = titulo;
+        this.autor = autor;
+        this.copiasDisponiveis = copiasDisponiveis;
+    }
+
+    public void emprestar() {
+        if (copiasDisponiveis > 0) {
+            copiasDisponiveis--;
+            vezesEmprestado++;
+        }
+    }
+
+    public int getPopularidade() {
+        return vezesEmprestado;
+    }
+}
+
+class Autor {
+    String nome;
+
+    public Autor(String nome) {
+        this.nome = nome;
+    }
+}
+
+class Usuario {
+    String nome;
+    List<Emprestimo> emprestimos = new ArrayList<>();
+
+    public Usuario(String nome) {
+        this.nome = nome;
+    }
+
+    public void realizarEmprestimo(Livro livro) {
+        if (livro.copiasDisponiveis > 0) {
+            emprestimos.add(new Emprestimo(this, livro));
+            livro.emprestar();
+        }
+    }
+
+    public List<Emprestimo> listarEmprestimos() {
+        return emprestimos;
+    }
+}
+
+class Emprestimo {
+    Usuario usuario;
+    Livro livro;
+    String dataEmprestimo;
+
+    public Emprestimo(Usuario usuario, Livro livro) {
+        this.usuario = usuario;
+        this.livro = livro;
+        this.dataEmprestimo = "2024-09-05"; // exemplo de data
+    }
+}
+8
+import java.util.ArrayList;
+import java.util.List;
+
+class Projeto {
+    String nome;
+    List<Desenvolvedor> desenvolvedores = new ArrayList<>();
+    List<Tarefa> tarefas = new ArrayList<>();
+
+    public Projeto(String nome) {
+        this.nome = nome;
+    }
+
+    public void adicionarTarefa(Tarefa tarefa) {
+        tarefas.add(tarefa);
+    }
+
+    public void atribuirTarefa(Desenvolvedor desenvolvedor, Tarefa tarefa) {
+        tarefa.atribuirDesenvolvedor(desenvolvedor);
+        desenvolvedor.adicionarTarefa(tarefa);
+    }
+
+    public int calcularCargaTrabalho() {
+        return tarefas.size();
+    }
+}
+
+class Desenvolvedor {
+    String nome;
+    List<Tarefa> tarefas = new ArrayList<>();
+
+    public Desenvolvedor(String nome) {
+        this.nome = nome;
+    }
+
+    public void adicionarTarefa(Tarefa tarefa) {
+        tarefas.add(tarefa);
+    }
+
+    public List<Tarefa> listarTarefas() {
+        return tarefas;
+    }
+}
+
+class Tarefa {
+    String descricao;
+    Desenvolvedor desenvolvedor;
+
+    public Tarefa(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public void atribuirDesenvolvedor(Desenvolvedor desenvolvedor) {
+        this.desenvolvedor = desenvolvedor;
+    }
+}
+9
+import java.util.ArrayList;
+import java.util.List;
+
+class Prato {
+    String nome;
+    double preco;
+
+    public Prato(String nome, double preco) {
+        this.nome = nome;
+        this.preco = preco;
+    }
+}
+
+class Mesa {
+    int numero;
+    List<Pedido> pedidos = new ArrayList<>();
+
+    public Mesa(int numero) {
+        this.numero = numero;
+    }
+
+    public void criarPedido(Prato prato) {
+        pedidos.add(new Pedido(prato));
+    }
+
+    public double calcularTotalConta() {
+        double total = 0;
+        for (Pedido pedido : pedidos) {
+            total += pedido.prato.preco;
+        }
+        return total;
+    }
+}
+
+class Pedido {
+    Prato prato;
+
+    public Pedido(Prato prato) {
+        this.prato = prato;
+    }
+}
+10
+import java.util.ArrayList;
+import java.util.List;
+
+class Estudante {
+    String nome;
+    List<Disciplina> disciplinas = new ArrayList<>();
+
+    public Estudante(String nome) {
+        this.nome = nome;
+    }
+
+    public void matricular(Disciplina disciplina) {
+        disciplinas.add(disciplina);
+    }
+
+    public double calcularMedia() {
+        double total = 0;
+        for (Disciplina disciplina : disciplinas) {
+            total += disciplina.getNota();
+        }
+        return total / disciplinas.size();
+    }
+}
+
+class Professor {
+    String nome;
+    List<Disciplina> disciplinas = new ArrayList<>();
+
+    public Professor(String nome) {
+        this.nome = nome;
+    }
+
+    public void adicionarDisciplina(Disciplina disciplina) {
+        disciplinas.add(disciplina);
+    }
+
+    public List<Disciplina> listarDisciplinas() {
+        return disciplinas;
+    }
+}
+
+class Disciplina {
+    String nome;
+    double nota;
+
+    public Disciplina(String nome, double nota) {
+        this.nome = nome;
+        this.nota = nota;
+    }
+
+    public double getNota() {
+        return nota;
+    }
+}
